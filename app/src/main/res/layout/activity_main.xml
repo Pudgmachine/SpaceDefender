@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/back"
+    android:orientation="vertical"
+    tools:context="com.example.myapplication.MainActivity">
+
+
+    <Button
+        android:id="@+id/new_game"
+        android:layout_width="160dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:onClick="onClickStartGame"
+        android:text="@string/new_game" />
+
+    <Spinner
+        android:id="@+id/choose_difficulty"
+        android:layout_width="151dp"
+        android:layout_height="68dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="#3F51B5"
+        android:entries="@array/difficulties"
+        android:text="@string/choose_difficulty"
+        android:textColor="#00FF00" />
+
+
+</LinearLayout>
