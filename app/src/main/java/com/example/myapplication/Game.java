@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Point;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,9 @@ public class Game extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         Intent intent=getIntent();
         setpDifficulty(intent.getStringExtra(EXTRA_DIF));
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Point point=new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
