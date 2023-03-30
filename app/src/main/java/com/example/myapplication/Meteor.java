@@ -19,8 +19,8 @@ public class Meteor {
         width=meteor.getWidth();
         height=meteor.getHeight();
 
-        width/=2;
-        height/=2;
+        width/=20;
+        height/=20;
 
         meteor=Bitmap.createScaledBitmap(meteor,width,height,false);
 

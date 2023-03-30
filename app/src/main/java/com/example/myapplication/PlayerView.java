@@ -1,17 +1,13 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,15 +15,16 @@ import java.util.Random;
 public class PlayerView extends SurfaceView implements Runnable {
 
     private Thread thread;
-    private int scrX,scrY,score=0;
+    private int score=0;
+    private final int scrX,scrY;
     private boolean isPlaying,gameOver=false;
-    private Paint paint;
-    private Background background_1,background_2;
-    private MyShip ship;
-    private List<Bullet> shots;
-    private Meteor[] meteors;
+    private final Paint paint;
+    private final Background background_1,background_2;
+    private final MyShip ship;
+    private final List<Bullet> shots;
+    private final Meteor[] meteors;
     int maxSpeed;
-    private Random random;
+    private final Random random;
 
     public PlayerView(Context context,int scrX,int scrY) {
         super(context);
@@ -102,7 +99,7 @@ public class PlayerView extends SurfaceView implements Runnable {
             ship.y=0;
         }
         if(ship.y>scrY-ship.height-30){
-            ship.y= (int) (scrY-ship.height-30);
+            ship.y= (scrY-ship.height-30);
         }
 
         List<Bullet>away=new ArrayList<>();
@@ -113,12 +110,14 @@ public class PlayerView extends SurfaceView implements Runnable {
             bullet.x+=50;
 
             for(Meteor met:meteors){
-                if(Rect.intersects(met.getCollision(),bullet.getCollision())){
-                    score++;
-                    met.x=-500;
-                    bullet.x=scrX+400;
-                    met.getShot=true;
-                }
+
+                    if (Rect.intersects(met.getCollision(), bullet.getCollision())) {
+                        score++;
+                        met.x = -500;
+                        bullet.x = scrX + 400;
+                        met.getShot = true;
+                    }
+
             }
         }
         for (Bullet bullet:away){
@@ -140,7 +139,8 @@ public class PlayerView extends SurfaceView implements Runnable {
                     met.speed=6;
                 }
                 met.x=scrX;
-                met.y=met.height+random.nextInt(scrY-met.height*2);
+                met.y=met.height+random.nextInt(scrY-met.height*3);
+
 
                 met.getShot=false;
             }
@@ -188,7 +188,7 @@ public class PlayerView extends SurfaceView implements Runnable {
 
     private void sleep(){
         try {
-            thread.sleep(15);
+            thread.sleep(10);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -212,13 +212,13 @@ public class PlayerView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent event) {
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                if(event.getX()<scrX/5){
+                if(event.getX()<(float)scrX/5){
                     ship.isGoingUp=true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 ship.isGoingUp=false;
-                if(event.getX()>scrX/5){
+                if(event.getX()>(float)scrX/5){
                     ship.shoot=true;
                 }
                 break;

@@ -15,7 +15,10 @@ public class Bullet {
         height=bullet.getHeight();
         width=bullet.getWidth();
 
-        bullet=Bitmap.createScaledBitmap(bullet,width/25,height/25,false);
+        height/=25;
+        width/=25;
+
+        bullet=Bitmap.createScaledBitmap(bullet,width,height,false);
     }
 
     Rect getCollision(){
