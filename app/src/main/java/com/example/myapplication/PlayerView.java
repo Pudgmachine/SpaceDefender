@@ -5,6 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
@@ -15,7 +19,7 @@ import java.util.Random;
 public class PlayerView extends SurfaceView implements Runnable {
 
     private Thread thread;
-    private int score=0;
+    private int score=0,sound;
     private final int scrX,scrY;
     private boolean isPlaying,gameOver=false;
     private final Paint paint;
@@ -25,20 +29,38 @@ public class PlayerView extends SurfaceView implements Runnable {
     private final Meteor[] meteors;
     int maxSpeed;
     private final Random random;
+    private SoundPool soundPool;
+
 
     public PlayerView(Context context,int scrX,int scrY) {
         super(context);
 
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            AudioAttributes audioAttributes=new AudioAttributes.Builder().
+                    setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).
+                    setUsage(AudioAttributes.USAGE_GAME).
+                    build();
+
+            soundPool=new SoundPool.Builder().
+                    setAudioAttributes(audioAttributes).
+                    build();
+
+        }
+        else{
+            soundPool=new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        }
+        sound= soundPool.load(context,R.raw.soundsh,1);
+
         if(Game.getpDif().equals("Easy")) {
-            maxSpeed=10;
+            maxSpeed=12;
 
         }
         else if(Game.getpDif().equals("Medium")) {
-            maxSpeed=14;
+            maxSpeed=16;
 
         }
         else {
-            maxSpeed=18;
+            maxSpeed=20;
         }
 
         this.scrX=scrX;
@@ -90,16 +112,16 @@ public class PlayerView extends SurfaceView implements Runnable {
         }
 
         if(ship.isGoingUp){
-            ship.y-=15;
+            ship.y-=18;
         }
         else{
-            ship.y+=15;
+            ship.y+=18;
         }
         if(ship.y<0){
             ship.y=0;
         }
-        if(ship.y>scrY-ship.height-30){
-            ship.y= (scrY-ship.height-30);
+        if(ship.y>scrY-ship.height*1.63){
+            ship.y= (int) (scrY-ship.height*1.63);
         }
 
         List<Bullet>away=new ArrayList<>();
@@ -158,6 +180,7 @@ public class PlayerView extends SurfaceView implements Runnable {
         if(getHolder().getSurface().isValid()){
             Canvas canvas= getHolder().lockCanvas();
 
+
             canvas.drawBitmap(background_1.background,background_1.X,background_1.Y,paint);
             canvas.drawBitmap(background_2.background,background_2.X,background_2.Y,paint);
 
@@ -168,14 +191,12 @@ public class PlayerView extends SurfaceView implements Runnable {
                 canvas.drawBitmap(met.getMet(),met.x,met.y,paint);
             }
 
-           if(gameOver){
-             isPlaying=false;
-              //  canvas.drawBitmap(ship.getDead(),ship.x,ship.x,paint);
-              //  getHolder().unlockCanvasAndPost(canvas);
+            if(gameOver){
+                isPlaying=false;
+                canvas.drawBitmap(ship.getDead(),ship.x,ship.y,paint);
+                getHolder().unlockCanvasAndPost(canvas);
                 return;
             }
-
-
 
 
             for(Bullet bullet:shots){
@@ -229,9 +250,10 @@ public class PlayerView extends SurfaceView implements Runnable {
 
 
     public void newBullet() {
+        soundPool.play(sound,1,1,0,0,1);
         Bullet bullet=new Bullet(getResources());
         bullet.x=ship.x+ship.width;
-        bullet.y=ship.y+ship.height/2-10;
+        bullet.y=ship.y+ship.height/2;
         shots.add(bullet);
     }
 }

@@ -8,11 +8,12 @@ import android.graphics.Rect;
 public class MyShip {
     public boolean isGoingUp=false,shoot=false;
     int x, y, width, height;
-    Bitmap ship;
+    Bitmap ship,dead;
     private PlayerView view;
 
     MyShip(PlayerView view,int scrY, Resources res) {
         ship = BitmapFactory.decodeResource(res, R.drawable.myship);
+        dead = BitmapFactory.decodeResource(res, R.drawable.dead);
 
         this.view=view;
         width = ship.getWidth();
@@ -22,6 +23,7 @@ public class MyShip {
         height /= 12;
 
         ship = Bitmap.createScaledBitmap(ship, width, height, false);
+        dead = Bitmap.createScaledBitmap(dead, width, height, false);
 
 
         x = 10;
@@ -43,9 +45,9 @@ public class MyShip {
         return new Rect(x,y,x+width,y+height);
     }
 
-    //Bitmap getDead(){
-    //    return dead;
-   // }
+    Bitmap getDead(){
+        return dead;
+    }
 }
 
 
