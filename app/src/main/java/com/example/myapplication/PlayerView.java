@@ -120,8 +120,8 @@ public class PlayerView extends SurfaceView implements Runnable {
         if(ship.y<0){
             ship.y=0;
         }
-        if(ship.y>scrY-ship.height*1.63){
-            ship.y= (int) (scrY-ship.height*1.63);
+        if(ship.y>scrY-ship.height){
+            ship.y= (int) (scrY-ship.height);
         }
 
         List<Bullet>away=new ArrayList<>();
@@ -161,7 +161,7 @@ public class PlayerView extends SurfaceView implements Runnable {
                     met.speed=6;
                 }
                 met.x=scrX;
-                met.y=met.height+random.nextInt(scrY-met.height*3);
+                met.y=met.height+random.nextInt(scrY-met.height*2);
 
 
                 met.getShot=false;
