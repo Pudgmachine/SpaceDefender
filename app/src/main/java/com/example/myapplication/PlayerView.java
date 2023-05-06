@@ -176,6 +176,7 @@ public class PlayerView extends SurfaceView implements Runnable {
 
     }
 
+
     private void draw(){
         if(getHolder().getSurface().isValid()){
             Canvas canvas= getHolder().lockCanvas();
